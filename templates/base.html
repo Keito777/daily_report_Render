@@ -1,0 +1,71 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- 互換表示の解除 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- タイトル -->
+    {% block title %}<title>日報管理ツール</title>{% endblock %}
+
+        <!-- for admin widgets -->
+        <!-- <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %}"/> -->
+        <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
+        <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+        
+        <script type="text/javascript" src="{% static 'admin/js/core.js' %}"></script>
+        <script type="text/javascript" src="{% static 'admin/js/admin/RelatedObjectLookups.js' %}"></script>
+        {{ form.media }}
+  </head>
+  <body>
+    <!-- ナビバー -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+      <a class="navbar-brand" href="{% url 'report:index' %}">日報管理サイト
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item m-1"><a class="nav-link" href="{% url 'report:index' %}">Top</a></li>
+            {% if not user.is_authenticated %}
+            <li class="nav-item m-1"><a class="nav-link" href="{% url 'accounts:login' %}">Log in</a></li>
+            <li class="nav-item m-1"><a class="nav-link" href="{% url 'accounts:signup' %}">Sign up</a></li>
+            {% else %}
+            <li class="nav-item m-1"><a class="nav-link" href="{% url 'accounts:my_page' user.pk %}">My page</a></li>
+            <li class="nav-item m-1"><a href="{% url 'accounts:logout'%}" class="nav-link">Logout</a></li>
+            {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <div class="pl-4 small" style="background-color: #e2e3e5 ; border-bottom: solid 1px #f3f3f3;">
+        {% if not user.is_authenticated %}
+          ログインしてください
+        {% else %}
+          こんにちは！ {{ user.username }} さんは、
+          {% if user.is_superuser %}
+          スーパーユーザーです。
+          {% elif user.is_staff %}
+          スタッフユーザーです。
+          {% elif user.is_active %}
+          アクティブユーザーです。
+          {% endif %}
+        {% endif %}
+    </div>
+
+    <!-- コンテンツ -->
+    {% block content %}{% endblock %}
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

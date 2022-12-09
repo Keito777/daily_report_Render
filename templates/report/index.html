@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load l10n %}
+
+{% block content %}
+<div class="container">
+    <div>
+        <h1>日報一覧（ユーザ名：{{ user.username }}）</h1>
+    </div>
+    <div>
+        <!-- 検索後のメッセージ -->
+        {% if messages %}
+        <ul class="messages" style="list-style: none; padding-left: 0px;" >
+          {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+              "{{ message }}" を含む検索結果:
+            </li>
+          {% endfor %}
+        </ul>
+        {% endif %}</div>
+    <div>
+    <div>
+        <!-- 検索フォーム -->
+        <form method="get">
+            <input type="search" value="{{ request.GET.query }}" 
+                   name="query" type="text" 
+                   placeholder=" 検索ワードを入力">
+            <button>検索</button>
+          </form>
+    </div>
+    <div>
+        <a href="{% url 'report:create' %}">新規作成</a>
+    </div> 
+        <ol>
+            {% for object in object_list %}
+            <li><a href="{% url 'report:detail' object.id %}">{{object.title}}：{{object.created|date:'Y/m/d'}}</a></li> <!--{{object.created|localize}}-->
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+
+<div class="row mx-auto" style="width: 600px;">
+    <ul class="pagination">
+        <!-- 前へ の部分 -->
+        {% if page_obj.has_previous %}
+        <li><a class="page-link text-primary d-inline-block" href="?page={{ page_obj.previous_page_number }}">＜</a></li>
+        {% endif %}
+
+        <!-- 数字の部分 -->
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li class="disabled"><div class="page-link text-secondary d-inline-block disabled">{{ num }}</div></li>
+        {% else %}
+        <li><a class="page-link text-primary d-inline-block" href="?page={{ num }}">{{ num }}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        <!-- 次へ の部分 -->
+        {% if page_obj.has_next %}
+        <li><a class="page-link text-primary d-inline-block" href="?page={{ page_obj.next_page_number }}">＞</a></li>
+        {% endif %}
+        <li class="p-md-2">
+            {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}を表示
+        </li>
+    </ul>
+</div>
+
+{% endblock%}

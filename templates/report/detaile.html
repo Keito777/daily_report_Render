@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+<!--{% load l10n %}-->
+
+{% block content %}
+<div class="container">
+    <h1>{{object.title}}</h1>
+    <!--<p><time>{{object.created_at|localize}}</time></p>-->
+    <div>
+        {{object.body| linebreaksbr}} <!--linebreaksbrで改行を反映する-->
+    </div>
+
+    <p><a href={% url 'report:update' object.id %}>Edit</a></p>
+    <p><a href={% url 'report:delete' object.id %}>Delete</a></p>
+</div>
+{% endblock %}
