@@ -1,6 +1,6 @@
 databases:
-  - name: mysite_DB
-    databaseName: mysite_DB
+  - name: mysite_db
+    databaseName: mysite_db
     user: mysite
     region: singapore
     plan: free
@@ -18,7 +18,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: mysite_DB
+          name: mysite_db
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
